@@ -1,0 +1,46 @@
+{
+  "name": "{{ agave.appsPrefix }}-hisat2-build-gf3",
+  "version": "2.2.1.01",
+  "label": "HISAT2 Build",
+  "defaultNodeCount": 1,
+  "defaultMemoryPerNode": 1,
+  "defaultProcessorsPerNode": 1,
+  "executionType": "HPC",
+  "parallelism": "SERIAL",
+  "checkpointable": false,
+  "executionSystem": "{{ agave.executionSystem }}",
+  "deploymentPath": "{{ agave.appsDir }}/hisat2-build-gf3-2.2.1-01",
+  "deploymentSystem": "{{ agave.deploymentSystem }}",
+  "templatePath": "hisat2-build-gf3.sh",
+  "testPath": "test/test.sh",
+  "inputs": [
+    { "id": "reference",
+      "value": {
+        "required": true,
+        "default": ""
+      }
+    }
+  ],
+  "parameters": [
+    { "id": "output",
+      "value": {
+        "required": true,
+        "type": "string"
+      }
+    },
+    { "id": "exec_method",
+      "value": {
+        "required": false,
+        "default": "auto",
+        "type": "string"
+      }
+    },
+    { "id": "exec_init",
+      "value": {
+        "required": false,
+        "default": ":",
+        "type": "string"
+      }
+    }
+  ]
+}
