@@ -32,11 +32,8 @@ version: '2.2.1-01'
 #
 # 1. label: Short description of the field
 # 2. description: Long description of the field
-# 3. type: Data type of the field. For input fields, values can be: File, 
-#    Directory, or Any. For parameter fields, values can be: File, Directory,
-#    Any, string, int, float, double, or long.
-# 4. required: Specifies if the input/parameter is required. 
-# 5. default: Specifies the default value of the field. 
+# 3. required: Specifies if the input/parameter is required. 
+# 4. default: Specifies the default value of the field. 
 #
 #    *Note: The following rules apply when handling "required" and "default"
 #    fields: 
@@ -47,9 +44,9 @@ version: '2.2.1-01'
 #    3. If required == false, and default is NOT specified, the input/parameter
 #       is only set if corresponding args are passed to the wrapper script.
 #
-# 6. test_value: (Optional) If specified, used as the value for this input/
+# 5. test_value: (Optional) If specified, used as the value for this input/
 #    parameter when generating the test script. 
-# 7. post_exec: (Optional) List of shell/bash commands used for post processing
+# 6. post_exec: (Optional) List of shell/bash commands used for post processing
 #    of the input/parameter value after argument parsing. Use these commands to
 #    modify or check the value of inputs/parameters; or create additional
 #    shell/bash variables for use in later parts of the script. By default, the
@@ -109,13 +106,10 @@ exec_methods:
   exec:
   - type: docker
     image: quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3
-    run: hisat2-build
-    args:
-    - mount: ${REFERENCE}
-    - mount: ${OUTPUT}
-      value: ${OUTPUT_BASE}/${OUTPUT_BASE}
-    stdout: ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout
-    stderr: ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr
+    run: >-
+      hisat2-build ^${REFERENCE_FULL} ^${OUTPUT_FULL}/${OUTPUT_BASE}
+      > ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout
+      2> ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr
 
 # List of optional commands executed after any method-specific execution
 # commands. These are environment cleanup commands. Each post_exec item

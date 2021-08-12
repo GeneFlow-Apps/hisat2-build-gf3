@@ -66,13 +66,9 @@ contains() {
 ## SCRIPT_DIR: directory of current script, depends on execution
 ## environment, which may be detectable using environment variables
 ###############################################################################
-if [ -z "${AGAVE_JOB_ID}" ]; then
-    # not an agave job
-    SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
-else
-    echo "Agave job detected"
-    SCRIPT_DIR=$(pwd)
-fi
+
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
 ## ****************************************************************************
 
 
@@ -317,7 +313,7 @@ MNT=""; ARG=""; CMD0="mkdir -p ${LOG_FULL} ${ARG}"; CMD="${CMD0}"; echo "CMD=${C
 ## There should be one case statement for each item in $exec_methods
 case "${AUTO_EXEC}" in
     docker)
-        MNT=""; ARG=""; fnrun0() { echo "hisat2-build" | sed 's/>/\\>/g' | sed 's/</\\</g' | sed 's/|/\\|/g'; }; RUN_FULL='hisat2-build'; eval "RUN_LIST=($(fnrun0))"; RUN=${RUN_LIST[0]}; for (( ri=1; ri<${#RUN_LIST[@]}; ri++ )); do if [ "${RUN_LIST[$ri]:0:1}" = "^" ]; then RARG="${RUN_LIST[$ri]#?}"; RARG_FULL=$(readlink -f "${RARG}"); RARG_DIR=$(dirname "${RARG}"); RARG_BASE=$(basename "${RARG}"); MNT="${MNT} -v "; MNT="${MNT}\"${RARG_DIR}:/data${ri}_r\""; ARG="${ARG} \"/data${ri}_r/${RARG_BASE}\""; else ARG="${ARG} ${RUN_LIST[$ri]}"; fi; done; MNT="${MNT} -v "; MNT="${MNT}\"${REFERENCE_DIR}:/data1\""; ARG="${ARG} \"/data1/${REFERENCE_BASE}\""; MNT="${MNT} -v "; MNT="${MNT}\"${OUTPUT_DIR}:/data2\""; ARG="${ARG} \"/data2/${OUTPUT_BASE}/${OUTPUT_BASE}\""; CMD0="docker run --rm ${MNT} quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3 ${RUN} ${ARG}"; CMD0="${CMD0} >\"${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout\""; CMD0="${CMD0} 2>\"${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr\""; CMD="${CMD0}"; echo "CMD=${CMD}"; safeRunCommand "${CMD}"; 
+        MNT=""; ARG=""; fnrun0() { echo "hisat2-build ^${REFERENCE_FULL} ^${OUTPUT_FULL}/${OUTPUT_BASE} > ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout 2> ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr" | sed 's/>/\\>/g' | sed 's/</\\</g' | sed 's/|/\\|/g'; }; eval "RUN_LIST=($(fnrun0))"; RUN=${RUN_LIST[0]}; for (( ri=1; ri<${#RUN_LIST[@]}; ri++ )); do if [ "${RUN_LIST[$ri]:0:1}" = "^" ]; then RARG="${RUN_LIST[$ri]#?}"; RARG_FULL=$(readlink -f "${RARG}"); RARG_DIR=$(dirname "${RARG}"); RARG_BASE=$(basename "${RARG}"); MNT="${MNT} -v "; MNT="${MNT}\"${RARG_DIR}:/data${ri}_r\""; ARG="${ARG} \"/data${ri}_r/${RARG_BASE}\""; else ARG="${ARG} ${RUN_LIST[$ri]}"; fi; done; CMD0="docker run --rm ${MNT} quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3 ${RUN} ${ARG}"; CMD="${CMD0}"; echo "CMD=${CMD}"; safeRunCommand "${CMD}"; 
         ;;
 esac
 ## ****************************************************************************
