@@ -11,8 +11,8 @@
 ## Usage description should match command line arguments defined below
 usage () {
     echo "Usage: $(basename "$0")"
-    echo "  --reference => Reference Sequence FASTA"
-    echo "  --output => Output Directory"
+    echo "  --reference => Reference sequence FASTA file to build with HISAT2"
+    echo "  --output => Output directory for reference index"
     echo "  --exec_method => Execution method (auto)"
     echo "  --exec_init => Execution initialization command(s)"
     echo "  --help => Display this help message"
@@ -188,7 +188,7 @@ echo "Execution Initialization: ${EXEC_INIT}"
 # REFERENCE input
 
 if [ -z "${REFERENCE}" ]; then
-    echo "Reference Sequence FASTA required"
+    echo "reference required"
     echo
     usage
     exit 1
@@ -203,7 +203,7 @@ do
     if [ $count == 10 ]; then break; fi
 done
 if [ ! -e "${REFERENCE}" ]; then
-    echo "Reference Sequence FASTA not found: ${REFERENCE}"
+    echo "reference not found: ${REFERENCE}"
     exit 1
 fi
 REFERENCE_FULL=$(readlink -f "${REFERENCE}")
@@ -222,7 +222,7 @@ if [ -n "${OUTPUT}" ]; then
     TMP_FULL="${OUTPUT_DIR}/_tmp"
 else
     :
-    echo "Output Directory required"
+    echo "output required"
     echo
     usage
     exit 1

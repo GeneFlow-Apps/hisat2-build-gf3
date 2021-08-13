@@ -62,14 +62,12 @@ version: '2.2.1-01'
 #    format for execution blocks.
 inputs:
   reference:
-    label: Reference Sequence FASTA
     description: Reference sequence FASTA file to build with HISAT2
     required: true
     test_value: ${SCRIPT_DIR}/data/sample.fa
 
 parameters:
   output:
-    label: Output Directory
     description: Output directory for reference index
     required: true
     test_value: reference
