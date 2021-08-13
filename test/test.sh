@@ -11,7 +11,7 @@
 ## Usage description should match command line arguments defined below
 usage () {
     echo "Usage: $(basename "$0")"
-    echo "  --exec_method => Execution method (docker, auto)"
+    echo "  --exec_method => Execution method (auto)"
     echo "  --exec_init => Execution initialization command(s)"
     echo "  --help => Display this help message"
 }

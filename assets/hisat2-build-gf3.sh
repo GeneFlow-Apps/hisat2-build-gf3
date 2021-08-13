@@ -13,7 +13,7 @@ usage () {
     echo "Usage: $(basename "$0")"
     echo "  --reference => Reference Sequence FASTA"
     echo "  --output => Output Directory"
-    echo "  --exec_method => Execution method (docker, auto)"
+    echo "  --exec_method => Execution method (auto)"
     echo "  --exec_init => Execution initialization command(s)"
     echo "  --help => Display this help message"
 }
@@ -239,7 +239,7 @@ fi
 
 ## ****************************************************************************
 ## List supported execution methods for this app (space delimited)
-exec_methods="docker auto"
+exec_methods="auto"
 ## ****************************************************************************
 
 ## ****************************************************************************

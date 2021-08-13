@@ -79,43 +79,44 @@ parameters:
 ###############################################################################
 ##### App Execution Methods #####
 ###############################################################################
+execution:
 
-# List of optional commands executed before any method-specific execution
-# commands. These are environment preparation commands. Each pre_exec item
-# is an execution block, as defined in the "Execution Blocks" section at the
-# end of this document.
-pre_exec:
-- run: mkdir -p ${OUTPUT_FULL}
-- run: mkdir -p ${LOG_FULL}
+  # List of optional commands executed before any method-specific execution
+  # commands. These are environment preparation commands. Each pre_exec item
+  # is an execution block, as defined in the "Execution Blocks" section at the
+  # end of this document.
+  pre:
+  - run: mkdir -p ${OUTPUT_FULL}
+  - run: mkdir -p ${LOG_FULL}
 
-# Supported execution methods are listed here in priority order. Each execution
-# method requires the following fields: 
-#
-# 1. name: Name of the execution method.
-# 2. if: A conditional block that must be satisfied for the execution method.
-#    If the condition is not satisified, the condition for the subsequent
-#    execution method is tested. If no execution method conditions are
-#    satisified, the script exits with an error code. See the section
-#    "Conditional Blocks" for more information.
-# 3. exec: A list of exeuction blocks to be executed for the execution method.
-#    See the section "Execution Blocks" for more information. 
-exec_methods:
-- name: docker
-  if:
-  - in_path: docker
-  exec:
-  - type: docker
-    image: quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3
-    run: >-
-      hisat2-build ^${REFERENCE_FULL} ^${OUTPUT_FULL}/${OUTPUT_BASE}
-      > ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout
-      2> ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr
+  # Supported execution methods are listed here in priority order. Each execution
+  # method requires the following fields: 
+  #
+  # 1. name: Name of the execution method.
+  # 2. if: A conditional block that must be satisfied for the execution method.
+  #    If the condition is not satisified, the condition for the subsequent
+  #    execution method is tested. If no execution method conditions are
+  #    satisified, the script exits with an error code. See the section
+  #    "Conditional Blocks" for more information.
+  # 3. exec: A list of exeuction blocks to be executed for the execution method.
+  #    See the section "Execution Blocks" for more information. 
+  methods:
+  - name: docker
+    if:
+    - in_path: docker
+    commands:
+    - type: docker
+      image: quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3
+      run: >-
+        hisat2-build ^${REFERENCE_FULL} ^${OUTPUT_FULL}/${OUTPUT_BASE}
+        > ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stdout
+        2> ${LOG_FULL}/${OUTPUT_BASE}-hisat2-build.stderr
 
-# List of optional commands executed after any method-specific execution
-# commands. These are environment cleanup commands. Each post_exec item
-# is an execution block, as defined in the "Execution Blocks" section at the
-# end of this document.
-post_exec:
+  # List of optional commands executed after any method-specific execution
+  # commands. These are environment cleanup commands. Each post_exec item
+  # is an execution block, as defined in the "Execution Blocks" section at the
+  # end of this document.
+  post:
 
 
 
